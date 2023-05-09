@@ -22,6 +22,7 @@ plugins/**/
 !plugins/tool
 !plugins/banwords
 !plugins/banwords/**/
+!plugins/banwords/config.json
 !plugins/hello
 !plugins/role
 !plugins/keyword
