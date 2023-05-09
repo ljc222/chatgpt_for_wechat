@@ -207,6 +207,7 @@ def read_file(path):
 
 
 def conf():
+    logger.info("[getconfig] --------------")
     return config
 
 
