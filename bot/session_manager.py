@@ -63,9 +63,12 @@ class SessionManager(object):
 
     def session_query(self, query, session_id):
         session = self.build_session(session_id)
+        logger.debug("after build session")
         session.add_query(query)
+        logger.debug("after add query")
         try:
             max_tokens = conf().get("conversation_max_tokens", 1000)
+            logger.debug("after session config")
             total_tokens = session.discard_exceeding(max_tokens, None)
             logger.debug("prompt tokens used={}".format(total_tokens))
         except Exception as e:
