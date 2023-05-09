@@ -36,6 +36,7 @@
   "speech_recognition": true,
   "group_speech_recognition": true,
   "voice_reply_voice": false,
+  "debug":true,
   "conversation_max_tokens": 1000,
   "expires_in_seconds": 3600,
   "character_desc": "你是小智, 一个由人工智能训练的大型语言模型, 你旨在回答并解决人们的任何问题，并且可以使用多种语言与人交流。",

@@ -51,6 +51,7 @@ class ChatGPTBot(Bot, OpenAIImage):
             session_id = context["session_id"]
             reply = None
             clear_memory_commands = conf().get("clear_memory_commands", ["#清除记忆"])
+            logger.info("config after")
             if query in clear_memory_commands:
                 self.sessions.clear_session(session_id)
                 reply = Reply(ReplyType.INFO, "记忆已清除")
@@ -58,6 +59,7 @@ class ChatGPTBot(Bot, OpenAIImage):
                 self.sessions.clear_all_session()
                 reply = Reply(ReplyType.INFO, "所有人记忆已清除")
             elif query == "#更新配置":
+                logger.info("config refresh")
                 load_config()
                 reply = Reply(ReplyType.INFO, "配置已更新")
             if reply:
