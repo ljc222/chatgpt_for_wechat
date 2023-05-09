@@ -26,3 +26,4 @@ plugins/**/
 !plugins/hello
 !plugins/role
 !plugins/keyword
+!config.json
