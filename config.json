@@ -36,7 +36,7 @@
   "speech_recognition": true,
   "group_speech_recognition": true,
   "voice_reply_voice": false,
-  "debug":true,
+  "debug":false,
   "channel_type":"wx",
   "conversation_max_tokens": 1000,
   "expires_in_seconds": 3600,
