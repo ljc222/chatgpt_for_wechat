@@ -59,41 +59,52 @@ class Banwords(Plugin):
             ContextType.IMAGE_CREATE,
         ]:
             return
-
-        content = e_context["context"].content
-        logger.debug("[Banwords] on_handle_context. content: %s" % content)
-        if self.action == "ignore":
-            f = self.searchr.FindFirst(content)
-            if f:
-                logger.info("[Banwords] %s in message" % f["Keyword"])
-                e_context.action = EventAction.BREAK_PASS
-                return
-        elif self.action == "replace":
-            if self.searchr.ContainsAny(content):
-                reply = Reply(ReplyType.INFO, "发言中包含敏感词，请重试: \n" + self.searchr.Replace(content))
-                e_context["reply"] = reply
-                e_context.action = EventAction.BREAK_PASS
-                return
+        try:
+            content = e_context["context"].content
+            logger.debug("[Banwords] on_handle_context. content: %s" % content)
+            if self.action == "ignore":
+                f = self.searchr.FindFirst(content)
+                if f:
+                    logger.info("[Banwords] %s in message" % f["Keyword"])
+                    reply = Reply(ReplyType.INFO, "发言中包含敏感词，请文明用语，并遵循互联网的法律法规，谢谢! \n")
+                    e_context["reply"] = reply
+                    e_context.action = EventAction.BREAK_PASS
+                    return
+            elif self.action == "replace":
+                if self.searchr.ContainsAny(content):
+                    reply = Reply(ReplyType.INFO, "发言中包含敏感词，请重试: \n" + self.searchr.Replace(content))
+                    e_context["reply"] = reply
+                    e_context.action = EventAction.BREAK_PASS
+                    return
+        except Exception as e:
+            logger.error("[Banwords] on_handle_context ocur error")
+            return
 
     def on_decorate_reply(self, e_context: EventContext):
         if e_context["reply"].type not in [ReplyType.TEXT]:
             return
 
-        reply = e_context["reply"]
-        content = reply.content
-        if self.reply_action == "ignore":
-            f = self.searchr.FindFirst(content)
-            if f:
-                logger.info("[Banwords] %s in reply" % f["Keyword"])
-                e_context["reply"] = None
-                e_context.action = EventAction.BREAK_PASS
-                return
-        elif self.reply_action == "replace":
-            if self.searchr.ContainsAny(content):
-                reply = Reply(ReplyType.INFO, "已替换回复中的敏感词: \n" + self.searchr.Replace(content))
-                e_context["reply"] = reply
-                e_context.action = EventAction.CONTINUE
-                return
+        try:
+            reply = e_context["reply"]
+            content = reply.content
+            if self.reply_action == "ignore":
+                f = self.searchr.FindFirst(content)
+                if f:
+                    logger.info("[Banwords] %s in reply" % f["Keyword"])
+                    e_context["reply"] = None
+                    e_context.action = EventAction.BREAK_PASS
+                    return
+            elif self.reply_action == "replace":
+                if self.searchr.ContainsAny(content):
+                    reply = Reply(ReplyType.INFO, "已替换回复中的敏感词: \n" + self.searchr.Replace(content))
+                    e_context["reply"] = reply
+                    e_context.action = EventAction.CONTINUE
+                    return
+        except Exception as e:
+            logger.error("[Banwords] on_handle_context ocur error")
+            e_context["reply"] = None
+            e_context.action = EventAction.BREAK_PASS
+            return
 
     def get_help_text(self, **kwargs):
         return "过滤消息中的敏感词。"
