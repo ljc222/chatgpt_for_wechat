@@ -69,6 +69,8 @@ class ChatGPTBot(Bot, OpenAIImage):
                 session = self.sessions.session_query(query, session_id)
             except Exception as e:
                 logger.error("session query failed:",e)
+                reply = Reply(ReplyType.INFO, "抱歉，请稍等一下，再次重试")
+                return reply
             logger.debug("[CHATGPT] session query={}".format(session.messages))
 
             api_key = context.get("openai_api_key")
