@@ -90,8 +90,9 @@ class Banwords(Plugin):
             if self.reply_action == "ignore":
                 f = self.searchr.FindFirst(content)
                 if f:
+                    logger.info(f"[Banwords] org replay:{content}")
                     logger.info("[Banwords] %s in reply" % f["Keyword"])
-                    e_context["reply"] = None
+                    e_context["reply"] = Reply(ReplyType.INFO, "回复中包含敏感词，麻烦换一个问法，抱歉了。 \n")
                     e_context.action = EventAction.BREAK_PASS
                     return
             elif self.reply_action == "replace":
