@@ -102,7 +102,7 @@ class Banwords(Plugin):
                     e_context.action = EventAction.CONTINUE
                     return
         except Exception as e:
-            logger.error("[Banwords] on_handle_context ocur error")
+            logger.error("[Banwords] on_decorate_reply ocur error")
             e_context["reply"] = None
             e_context.action = EventAction.BREAK_PASS
             return
