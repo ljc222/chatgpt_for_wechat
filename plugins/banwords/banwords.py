@@ -72,7 +72,7 @@ class Banwords(Plugin):
                     return
             elif self.action == "replace":
                 if self.searchr.ContainsAny(content):
-                    reply = Reply(ReplyType.INFO, "发言中包含敏感词，请重试: \n" + self.searchr.Replace(content))
+                    reply = Reply(ReplyType.INFO, "发言中包含敏感词，请更改后重试: \n" + self.searchr.Replace(content))
                     e_context["reply"] = reply
                     e_context.action = EventAction.BREAK_PASS
                     return
