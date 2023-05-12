@@ -99,13 +99,12 @@ class Banwords(Plugin):
                 if self.searchr.ContainsAny(content):
                     # reply = Reply(ReplyType.INFO, "已替换回复中的敏感词: \n" + self.searchr.Replace(content))
                     logger.info(f"[Banwords] org replay:{content}")
-                    logger.info("[Banwords] %s in reply" % f["Keyword"])
                     reply = Reply(ReplyType.TEXT,self.searchr.Replace(content))
                     e_context["reply"] = reply
                     e_context.action = EventAction.CONTINUE
                     return
         except Exception as e:
-            logger.error("[Banwords] on_decorate_reply ocur error")
+            logger.error("[Banwords] on_decorate_reply ocur error",e)
             e_context["reply"] = None
             e_context.action = EventAction.BREAK_PASS
             return
