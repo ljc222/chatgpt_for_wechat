@@ -20,6 +20,10 @@
             "enabled": true,
             "priority": 0
         },
+        "Hello": {
+            "enabled": true,
+            "priority": 0
+        },
         "Dungeon": {
             "enabled": true,
             "priority": 0
@@ -27,10 +31,6 @@
         "BDunit": {
             "enabled": false,
             "priority": 0
-        },
-        "Hello": {
-            "enabled": true,
-            "priority": -1
         },
         "Finish": {
             "enabled": true,

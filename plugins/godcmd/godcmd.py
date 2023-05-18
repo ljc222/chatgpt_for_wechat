@@ -133,36 +133,37 @@ ADMIN_COMMANDS = {
 # 定义帮助函数
 def get_help_text(isadmin, isgroup):
     help_text = "通用指令：\n"
-    for cmd, info in COMMANDS.items():
-        if cmd == "auth":  # 不提示认证指令
-            continue
-        if cmd == "id" and conf().get("channel_type", "wx") not in ["wxy", "wechatmp"]:
-            continue
-        alias = ["#" + a for a in info["alias"][:1]]
-        help_text += f"{','.join(alias)} "
-        if "args" in info:
-            args = [a for a in info["args"]]
-            help_text += f"{' '.join(args)}"
-        help_text += f": {info['desc']}\n"
-
-    # 插件指令
-    plugins = PluginManager().list_plugins()
-    help_text += "\n目前可用插件有："
-    for plugin in plugins:
-        if plugins[plugin].enabled and not plugins[plugin].hidden:
-            namecn = plugins[plugin].namecn
-            help_text += "\n%s:" % namecn
-            help_text += PluginManager().instances[plugin].get_help_text(verbose=False).strip()
-
-    if ADMIN_COMMANDS and isadmin:
-        help_text += "\n\n管理员指令：\n"
-        for cmd, info in ADMIN_COMMANDS.items():
+    if 1==0:
+        for cmd, info in COMMANDS.items():
+            if cmd == "auth":  # 不提示认证指令
+                continue
+            if cmd == "id" and conf().get("channel_type", "wx") not in ["wxy", "wechatmp"]:
+                continue
             alias = ["#" + a for a in info["alias"][:1]]
             help_text += f"{','.join(alias)} "
             if "args" in info:
                 args = [a for a in info["args"]]
                 help_text += f"{' '.join(args)}"
             help_text += f": {info['desc']}\n"
+
+        # 插件指令
+        plugins = PluginManager().list_plugins()
+        help_text += "\n目前可用插件有："
+        for plugin in plugins:
+            if plugins[plugin].enabled and not plugins[plugin].hidden:
+                namecn = plugins[plugin].namecn
+                help_text += "\n%s:" % namecn
+                help_text += PluginManager().instances[plugin].get_help_text(verbose=False).strip()
+
+        if ADMIN_COMMANDS and isadmin:
+            help_text += "\n\n管理员指令：\n"
+            for cmd, info in ADMIN_COMMANDS.items():
+                alias = ["#" + a for a in info["alias"][:1]]
+                help_text += f"{','.join(alias)} "
+                if "args" in info:
+                    args = [a for a in info["args"]]
+                    help_text += f"{' '.join(args)}"
+                help_text += f": {info['desc']}\n"
     return help_text
 
 
@@ -220,7 +221,7 @@ class Godcmd(Plugin):
             if len(content) == 1:
                 reply = Reply()
                 reply.type = ReplyType.ERROR
-                reply.content = f"空指令，输入#help查看指令列表\n"
+                reply.content = f"空指令\n"
                 e_context["reply"] = reply
                 e_context.action = EventAction.BREAK_PASS
                 return
@@ -244,7 +245,8 @@ class Godcmd(Plugin):
                 cmd = next(c for c, info in COMMANDS.items() if cmd in info["alias"])
                 if cmd == "auth":
                     ok, result = self.authenticate(user, args, isadmin, isgroup)
-                elif cmd == "help" or cmd == "helpp":
+                # elif cmd == "help" or cmd == "helpp":
+                elif cmd == "helpp":
                     if len(args) == 0:
                         ok, result = True, get_help_text(isadmin, isgroup)
                     else:
@@ -402,7 +404,7 @@ class Godcmd(Plugin):
                 trigger_prefix = conf().get("plugin_trigger_prefix", "$")
                 if trigger_prefix == "#":  # 跟插件聊天指令前缀相同，继续递交
                     return
-                ok, result = False, f"未知指令：{cmd}\n查看指令列表请输入#help \n"
+                ok, result = False, f"未知指令：{cmd}\n"
 
             reply = Reply()
             if ok:

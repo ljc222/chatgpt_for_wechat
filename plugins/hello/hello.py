@@ -27,6 +27,7 @@ class Hello(Plugin):
             ContextType.TEXT,
             ContextType.JOIN_GROUP,
             ContextType.PATPAT,
+            ContextType.FRIENDS_ADD,
         ]:
             return
 
@@ -40,8 +41,22 @@ class Hello(Plugin):
         if e_context["context"].type == ContextType.PATPAT:
             e_context["context"].type = ContextType.TEXT
             msg: ChatMessage = e_context["context"]["msg"]
-            e_context["context"].content = f"请你随机使用一种风格介绍你自己，并告诉用户输入#help可以查看帮助信息。"
+            e_context["context"].content = f"请你随机使用一种风格介绍你自己。"
             e_context.action = EventAction.CONTINUE  # 事件继续，交付给下个插件或默认逻辑
+            return
+
+        if e_context["context"].type == ContextType.FRIENDS_ADD:
+            reply = Reply()
+            reply.type = ReplyType.TEXT
+            msg: ChatMessage = e_context["context"]["msg"]
+            welcome_info="您好！\n"
+            welcome_info+="  小智目前接入最新版本的ChatGPT，上知天文，下知地理，"
+            welcome_info+="会写程序，能聊感情，会画画，能帮你解惑等等，自己愉快体验吧。\n"
+            welcome_info+="  另外，请在法律允许下提问，严禁涉及违法、政治相关提问。\n"
+            welcome_info+="否则一律封号处理，谢谢。"
+            reply.content = f"{msg.from_user_nickname},\n{welcome_info}"
+            e_context["reply"] = reply
+            e_context.action = EventAction.BREAK_PASS  # 事件结束，并跳过处理context的默认逻辑
             return
 
         content = e_context["context"].content

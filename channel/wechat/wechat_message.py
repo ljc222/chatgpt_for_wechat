@@ -26,6 +26,10 @@ class WechatMessage(ChatMessage):
             self.ctype = ContextType.IMAGE
             self.content = TmpDir().path() + itchat_msg["FileName"]  # content直接存临时目录路径
             self._prepare_fn = lambda: itchat_msg.download(self.content)
+        elif itchat_msg["Type"] ==FRIENDS:  #添加好友
+            self.ctype = ContextType.FRIENDS
+            self.content = itchat_msg["Content"]
+
         elif itchat_msg["Type"] == NOTE and itchat_msg["MsgType"] == 10000:
             if is_group and ("加入群聊" in itchat_msg["Content"] or "加入了群聊" in itchat_msg["Content"]):
                 self.ctype = ContextType.JOIN_GROUP
@@ -40,6 +44,14 @@ class WechatMessage(ChatMessage):
                 self.content = itchat_msg["Content"]
                 if is_group:
                     self.actual_user_nickname = re.findall(r"\"(.*?)\"", itchat_msg["Content"])[0]
+            elif "你已添加了" in itchat_msg["Content"]:
+                keystr ="你已添加了"
+                self.ctype = ContextType.FRIENDS_ADD
+                self.content = itchat_msg["Content"]
+                lstart = self.content.find(keystr)+len(keystr)
+                lend = self.content.find("，")
+                nickname = self.content[lstart:lend]
+                self.from_user_nickname = nickname
             else:
                 raise NotImplementedError("Unsupported note message: " + itchat_msg["Content"])
         else:

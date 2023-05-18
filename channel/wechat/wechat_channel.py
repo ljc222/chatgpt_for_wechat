@@ -26,7 +26,7 @@ from lib.itchat.content import *
 from plugins import *
 
 
-@itchat.msg_register([TEXT, VOICE, PICTURE, NOTE])
+@itchat.msg_register([TEXT, VOICE, PICTURE, NOTE,FRIENDS])
 def handler_single_msg(msg):
     try:
         cmsg = WechatMessage(msg, False)
@@ -150,6 +150,10 @@ class WechatChannel(ChatChannel):
             logger.debug("[WX]receive patpat msg: {}".format(cmsg.content))
         elif cmsg.ctype == ContextType.TEXT:
             logger.debug("[WX]receive text msg: {}, cmsg={}".format(json.dumps(cmsg._rawmsg, ensure_ascii=False), cmsg))
+        elif cmsg.ctype == ContextType.FRIENDS_ADD:
+            logger.debug("[WX]receive add_friend_verify msg: {}".format(cmsg.content))
+        elif cmsg.ctype == ContextType.FRIENDS:
+            logger.debug("[WX]receive addfriend msg: {}".format(cmsg.content))
         else:
             logger.debug("[WX]receive msg: {}, cmsg={}".format(cmsg.content, cmsg))
         context = self._compose_context(cmsg.ctype, cmsg.content, isgroup=False, msg=cmsg)
