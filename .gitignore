@@ -5,7 +5,6 @@
 __pycache__/
 venv*
 *.pyc
-config.json
 QR.png
 nohup.out
 tmp
@@ -15,7 +14,6 @@ itchat.pkl
 user_datas.pkl
 chatgpt_tool_hub/
 plugins/**/
-plugins/**/config.json
 !plugins/bdunit
 !plugins/dungeon
 !plugins/finish
@@ -27,6 +25,6 @@ plugins/**/config.json
 !plugins/hello
 !plugins/role
 !plugins/keyword
-!config.json
 !plugins/plugins.json
 plugins/**/config.json
+config.json
