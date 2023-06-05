@@ -60,22 +60,25 @@ class Banwords(Plugin):
         ]:
             return
         try:
-            content = e_context["context"].content
-            logger.debug("[Banwords] on_handle_context. content: %s" % content)
-            if self.action == "ignore":
-                f = self.searchr.FindFirst(content)
-                if f:
-                    logger.info("[Banwords] %s in message" % f["Keyword"])
-                    reply = Reply(ReplyType.INFO, "发言中包含敏感词，请文明用语，并遵循互联网的法律法规，谢谢! \n")
-                    e_context["reply"] = reply
-                    e_context.action = EventAction.BREAK_PASS
-                    return
-            elif self.action == "replace":
-                if self.searchr.ContainsAny(content):
-                    reply = Reply(ReplyType.INFO, "发言中包含敏感词，请更改后重试: \n" + self.searchr.Replace(content))
-                    e_context["reply"] = reply
-                    e_context.action = EventAction.BREAK_PASS
-                    return
+            # 提问不处理敏感词，回复替换敏感词
+            # content = e_context["context"].content
+            # logger.debug("[Banwords] on_handle_context. content: %s" % content)
+            # if self.action == "ignore":
+            #     f = self.searchr.FindFirst(content)
+            #     if f:
+            #         logger.info("[Banwords] %s in message" % f["Keyword"])
+            #         reply = Reply(ReplyType.INFO, "发言中包含敏感词，请文明用语，并遵循互联网的法律法规，谢谢! \n")
+            #         e_context["reply"] = reply
+            #         e_context.action = EventAction.BREAK_PASS
+            #         return
+            # elif self.action == "replace":
+            #     if self.searchr.ContainsAny(content):
+            #         # reply = Reply(ReplyType.INFO, "发言中包含敏感词，请更改后重试: \n" + self.searchr.Replace(content))
+            #         # e_context["reply"] = reply
+            #         # e_context.action = EventAction.BREAK_PASS
+            #         e_context["context"].content = self.searchr.Replace(content)
+            #         return
+            return
         except Exception as e:
             logger.error("[Banwords] on_handle_context ocur error")
             return
