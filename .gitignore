@@ -28,4 +28,3 @@ plugins/**/
 !plugins/plugins.json
 plugins/**/config.json
 config.json
-!plugins/banwords/config.json
