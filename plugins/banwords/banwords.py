@@ -28,7 +28,7 @@ class Banwords(Plugin):
             config_path = os.path.join(curdir, "config.json")
             conf = None
             if not os.path.exists(config_path):
-                conf = {"action": "ignore"}
+                conf = {"action": "replace"}
                 with open(config_path, "w") as f:
                     json.dump(conf, f, indent=4)
             else:
@@ -47,7 +47,7 @@ class Banwords(Plugin):
             self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
             if conf.get("reply_filter", True):
                 self.handlers[Event.ON_DECORATE_REPLY] = self.on_decorate_reply
-                self.reply_action = conf.get("reply_action", "ignore")
+                self.reply_action = conf.get("reply_action", "replace")
             logger.info("[Banwords] inited")
         except Exception as e:
             logger.warn("[Banwords] init failed, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/banwords .")
