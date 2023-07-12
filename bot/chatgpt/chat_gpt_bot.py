@@ -134,7 +134,7 @@ class ChatGPTBot(Bot, OpenAIImage):
                 "content": response.choices[0]["message"]["content"],
             }
         except Exception as e:
-            need_retry = retry_count < 2
+            need_retry = retry_count < 3
             result = {"completion_tokens": 0, "content": "我现在有点累了，等会再来吧"}
             if isinstance(e, openai.error.RateLimitError):
                 logger.warn("[CHATGPT] RateLimitError: {}".format(e))
@@ -153,8 +153,10 @@ class ChatGPTBot(Bot, OpenAIImage):
                     time.sleep(10)
             elif isinstance(e, openai.error.APIConnectionError):
                 logger.warn("[CHATGPT] APIConnectionError: {}".format(e))
-                need_retry = False
-                result["content"] = "我连接不到你的网络"
+                if need_retry:
+                    time.sleep(5)
+                else:
+                    result["content"] = "我连接不到你的网络"
             else:
                 logger.exception("[CHATGPT] Exception: {}".format(e))
                 need_retry = False
