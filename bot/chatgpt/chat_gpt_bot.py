@@ -164,6 +164,8 @@ class ChatGPTBot(Bot, OpenAIImage):
 
             if need_retry:
                 logger.warn("[CHATGPT] 第{}次重试".format(retry_count + 1))
+                if retry_count>1:
+                    session.reset()
                 return self.reply_text(session, api_key, args, retry_count + 1)
             else:
                 return result
