@@ -157,6 +157,12 @@ class ChatGPTBot(Bot, OpenAIImage):
                     time.sleep(5)
                 else:
                     result["content"] = "我连接不到你的网络"
+            elif isinstance(e, openai.error.ServiceUnavailableError):
+                logger.warn("[CHATGPT] ServiceUnavailableError: {}".format(e))
+                if need_retry:
+                    time.sleep(8)
+                else:
+                    result["content"] = "ChatGPT服务器繁忙，请稍后再试"            
             else:
                 logger.exception("[CHATGPT] Exception: {}".format(e))
                 need_retry = False
